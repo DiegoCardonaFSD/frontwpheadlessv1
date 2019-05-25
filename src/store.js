@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-Vue.use(Vuex, axios)
+Vue.use(Vuex, axios);
+
+let domain = "http://wpheadlessv1.test";
 
 export default new Vuex.Store({
   state: {
@@ -59,7 +61,7 @@ export default new Vuex.Store({
       dispatch('getInterviewers');
     },
     getInterviews({commit}){
-      axios.get("http://wpheadlessv1.test/wp-json/acf/v3/interviews")
+      axios.get(domain+"/wp-json/acf/v3/interviews")
         .then((response)  =>  {
           //console.log(JSON.stringify(response.data));
           let interviews = response.data;
@@ -72,7 +74,7 @@ export default new Vuex.Store({
         })
     },
     getCandidates({commit}){
-      axios.get("http://wpheadlessv1.test/wp-json/acf/v3/candidates")
+      axios.get(domain+"/wp-json/acf/v3/candidates")
         .then((response)  =>  {
           //console.log(JSON.stringify(response.data));
           let candidates = response.data;
@@ -85,7 +87,7 @@ export default new Vuex.Store({
         })
     },
     getInterviewers({commit}){
-      axios.get("http://wpheadlessv1.test/wp-json/acf/v3/interviewers")
+      axios.get(domain+"/wp-json/acf/v3/interviewers")
         .then((response)  =>  {
           //console.log(JSON.stringify(response.data));
           let interviewers = response.data;
@@ -97,8 +99,11 @@ export default new Vuex.Store({
           this.loading = false;
         })
     },
-    getInterview({commit}, id){
-      
+    ////DELETES
+    deleteInterview({commit}, id){
+      //  /wp-json/acf/v3/interviews/41
+      console.log('deleteInterview')
+      console.log(id)
     }
   }
 })
