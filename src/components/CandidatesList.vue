@@ -1,0 +1,62 @@
+<template>
+    <div>
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <h6 class="pb-2 mb-0">Latest Candidates</h6>
+            <div class="media text-muted pt-3 table-responsive">
+                <table class="table table-striped d-block d-md-none">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item of candidates" :key="item.id">
+                            <th scope="row" v-text="item.id">1</th>
+                            <td v-text="item.acf.name +' '+ item.acf.lastname "></td>
+                            <td>
+                                <i class="fas fa-eye"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped d-none d-md-block">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">PhoneNumber</th>
+                            <th scope="col">Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item of candidates" :key="item.id">
+                            <th scope="row" v-text="item.id">1</th>
+                            <td v-text="item.acf.name +' '+ item.acf.lastname "></td>
+                            <td v-text="item.acf.email"></td>
+                            <td v-text="item.acf.phonenumber"></td>
+                            <td v-text="item.acf.position"></td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+
+import {mapState} from 'vuex'
+
+export default {
+    name: 'CandidatesList', 
+    computed: {
+        ...mapState(['candidates'])
+    }
+}
+</script>
+

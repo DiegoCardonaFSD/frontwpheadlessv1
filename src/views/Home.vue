@@ -3,14 +3,14 @@
     <Header/>
     <main role="main" class="container">
       <Nav/>
-      <ListInterviews/>
+      <InterviewsList/>
       </main>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import ListInterviews from '@/components/ListInterviews.vue'
+import InterviewsList from '@/components/InterviewsList.vue'
 import Nav from '@/components/Nav.vue'
 import Header from '@/components/Header.vue'
 
@@ -18,7 +18,7 @@ export default {
   name: 'home',
   components: {
     Header,
-    ListInterviews,
+    InterviewsList,
     Nav,
   }
 }
