@@ -7,6 +7,8 @@ Vue.use(Vuex, axios)
 export default new Vuex.Store({
   state: {
     interviews: [],
+    interview: {acf: {interviewer: {id:''}, candidate: {id: ''}, date: '', meetinglink: '',rate: '', status: ''}},
+    interview_id: 0,
     candidates: [],
     interviewers: [],
 
@@ -14,6 +16,16 @@ export default new Vuex.Store({
   mutations: {
     SET_INTERVIEWS(state, interviews){
       state.interviews = interviews;
+    },
+    SET_INTERVIEW(state, id){
+      // state.interview = interview;
+      console.log('SET_INTERVIEW '+ id);
+      state.interview_id = id;
+      state.interviews.forEach(element => {
+        if(element.id == id){
+          state.interview = element;
+        }
+      });
     },
     SET_CANDIDATES(state, candidates){
       state.candidates = candidates;
@@ -34,6 +46,9 @@ export default new Vuex.Store({
           //console.log(JSON.stringify(response.data));
           let interviews = response.data;
           commit('SET_INTERVIEWS', interviews);
+          if(this.state.interview_id != 0){
+            commit('SET_INTERVIEW', this.state.interview_id);
+          }
         }, (error)  =>  {
           this.loading = false;
         })
@@ -57,6 +72,9 @@ export default new Vuex.Store({
         }, (error)  =>  {
           this.loading = false;
         })
+    },
+    getInterview({commit}, id){
+      
     }
   }
 })

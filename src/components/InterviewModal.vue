@@ -20,27 +20,27 @@
                                         <tbody>
                                             <tr>
                                                 <th>Interviewer</th>
-                                                <td></td>
+                                                <td v-text="interview.acf.interviewer.post_title"></td>
                                             </tr>
                                             <tr>
                                                 <th>Candidate</th>
-                                                <td></td>
+                                                <td v-text="interview.acf.candidate.post_title"></td>
                                             </tr>
                                             <tr>
                                                 <th>Date</th>
-                                                <td></td>
+                                                <td v-text="interview.acf.date"></td>
                                             </tr>
                                             <tr>
                                                 <th>Meeting Link</th>
-                                                <td></td>
+                                                <td v-text="interview.acf.meetinglink"></td>
                                             </tr>
                                             <tr>
                                                 <th>Rate</th>
-                                                <td></td>
+                                                <td v-text="interview.acf.rate"></td>
                                             </tr>
                                             <tr>
                                                 <th>Status</th>
-                                                <td></td>
+                                                <td v-text="interview.acf.status"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -68,16 +68,17 @@ export default {
     data(){
         return{
             showModal:true,
+            id: this.$route.params.id,
         }
     },
     computed: {
         ...mapState(['interviewers','interview'])
     },
     created(){
-        
+        this.SET_INTERVIEW(this.id);
     },
     methods: {
-        ...mapMutations(['getInterview']),
+        ...mapMutations(['SET_INTERVIEW']),
         closeModal(){
             this.showModal = false;
             this.$router.push( '/interviews' );
