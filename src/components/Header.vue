@@ -27,10 +27,6 @@
                             </router-link>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2 text-light light" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0 text-light" type="submit">Search</button>
-                    </form>
                 </div>
             </nav>
             

@@ -9,7 +9,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Interview</h5>
+                                <h5 class="modal-title">Candidate</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true" @click="closeModal">&times;</span>
                                 </button>
@@ -19,28 +19,24 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
-                                                <th>Interviewer</th>
-                                                <td v-text="interview.acf.interviewer.post_title"></td>
+                                                <th>Name</th>
+                                                <td v-text="candidate.acf.name"></td>
                                             </tr>
                                             <tr>
-                                                <th>Candidate</th>
-                                                <td v-text="interview.acf.candidate.post_title"></td>
+                                                <th>LastName</th>
+                                                <td v-text="candidate.acf.lastname"></td>
                                             </tr>
                                             <tr>
-                                                <th>Date</th>
-                                                <td v-text="interview.acf.date"></td>
+                                                <th>Email</th>
+                                                <td v-text="candidate.acf.email"></td>
                                             </tr>
                                             <tr>
-                                                <th>Meeting Link</th>
-                                                <td v-text="interview.acf.meetinglink"></td>
+                                                <th>PhoneNumber</th>
+                                                <td v-text="candidate.acf.phonenumber"></td>
                                             </tr>
                                             <tr>
-                                                <th>Rate</th>
-                                                <td v-text="interview.acf.rate"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Status</th>
-                                                <td v-text="interview.acf.status"></td>
+                                                <th>Position</th>
+                                                <td v-text="candidate.acf.position"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -64,7 +60,7 @@
 import {mapState,mapMutations} from 'vuex'
 
 export default {
-    name: 'InterviewModal', 
+    name: 'CandidateModal', 
     data(){
         return{
             showModal:true,
@@ -72,18 +68,18 @@ export default {
         }
     },
     computed: {
-        ...mapState(['interviewers','interview'])
+        ...mapState(['candidates','candidate'])
     },
     created(){
-        this.SET_INTERVIEW(this.id);
+        this.SET_CANDIDATE(this.id);
     },
     methods: {
-        ...mapMutations(['SET_INTERVIEW']),
+        ...mapMutations(['SET_CANDIDATE']),
         closeModal(){
             this.showModal = false;
-            this.$router.push( '/interviews' );
+            this.$router.push( '/candidates' );
         }
-    },
+    } 
 }
 
 </script>

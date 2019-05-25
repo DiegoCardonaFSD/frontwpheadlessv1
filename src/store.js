@@ -10,7 +10,11 @@ export default new Vuex.Store({
     interview: {acf: {interviewer: {id:''}, candidate: {id: ''}, date: '', meetinglink: '',rate: '', status: ''}},
     interview_id: 0,
     candidates: [],
+    candidate: {acf: {name: '', lastname: '', email: '', phonenumber: '', position: ''}},
+    candidate_id: 0,
     interviewers: [],
+    interviewer: {acf: {name: '', lastname: '', email: '', phonenumber: '', technologies_evaluated: ''}},
+    interviewer_id: 0,
 
   },
   mutations: {
@@ -18,8 +22,6 @@ export default new Vuex.Store({
       state.interviews = interviews;
     },
     SET_INTERVIEW(state, id){
-      // state.interview = interview;
-      console.log('SET_INTERVIEW '+ id);
       state.interview_id = id;
       state.interviews.forEach(element => {
         if(element.id == id){
@@ -30,8 +32,24 @@ export default new Vuex.Store({
     SET_CANDIDATES(state, candidates){
       state.candidates = candidates;
     },
+    SET_CANDIDATE(state, id){
+      state.candidate_id = id;
+      state.candidates.forEach(element => {
+        if(element.id == id){
+          state.candidate = element;
+        }
+      });
+    },
     SET_INTERVIEWERS(state, interviewers){
       state.interviewers = interviewers;
+    },
+    SET_INTERVIEWER(state, id){
+      state.interviewer_id = id;
+      state.interviewers.forEach(element => {
+        if(element.id == id){
+          state.interviewer = element;
+        }
+      });
     },
   },
   actions: {
@@ -59,6 +77,9 @@ export default new Vuex.Store({
           //console.log(JSON.stringify(response.data));
           let candidates = response.data;
           commit('SET_CANDIDATES', candidates);
+          if(this.state.candidate_id != 0){
+            commit('SET_CANDIDATE', this.state.candidate_id);
+          }
         }, (error)  =>  {
           this.loading = false;
         })
@@ -69,6 +90,9 @@ export default new Vuex.Store({
           //console.log(JSON.stringify(response.data));
           let interviewers = response.data;
           commit('SET_INTERVIEWERS', interviewers);
+          if(this.state.interviewer_id != 0){
+            commit('SET_INTERVIEWER', this.state.interviewer_id);
+          }
         }, (error)  =>  {
           this.loading = false;
         })

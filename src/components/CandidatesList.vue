@@ -36,7 +36,9 @@
                     <tbody>
                         <tr v-for="item of candidates" :key="item.id">
                             <th scope="row" v-text="item.id">1</th>
-                            <td v-text="item.acf.name +' '+ item.acf.lastname "></td>
+                            <router-link :to="{ name: 'candidate', params: { id: item.id }}">
+                                <td v-text="item.acf.name +' '+ item.acf.lastname "></td>
+                            </router-link>
                             <td v-text="item.acf.email"></td>
                             <td v-text="item.acf.phonenumber"></td>
                             <td v-text="item.acf.position"></td>
