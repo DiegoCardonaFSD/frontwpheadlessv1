@@ -6,15 +6,9 @@ Vue.use(Vuex, axios)
 
 export default new Vuex.Store({
   state: {
-    interviews: [
-      {acf: {interviewer: {id:''}, candidate: {id: ''}, date: '', meetinglink: '',rate: '', status: ''}},
-    ],
-    candidates: [
-      {acf:{name:'',lastname:'', phonenumer:'', position: ''}}
-    ],
-    interviewers: [
-      {acf:{name:'',lastname:'', phonenumer:'', technologies_evaluated: ''}}
-    ],
+    interviews: [],
+    candidates: [],
+    interviewers: [],
 
   },
   mutations: {

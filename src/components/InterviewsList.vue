@@ -18,7 +18,9 @@
                                 <td v-text="item.acf.interviewer.post_title"></td>
                                 <td v-text="item.acf.candidate.post_title"></td>
                                 <td>
-                                    <i class="fas fa-search-plus"></i>
+                                    <router-link :to="{ name: 'interview', params: { id: item.id }}">
+                                        <i class="fas fa-search-plus"></i>
+                                    </router-link>
                                 </td>
                             </tr>
                         
@@ -45,7 +47,9 @@
                                 <td  v-text="item.acf.date"></td>
                                 <td  v-text="item.acf.status"></td>
                                 <td>
-                                    <i class="fas fa-search-plus"></i>
+                                    <router-link :to="{ name: 'interview', params: { id: item.id }}">
+                                        <i class="fas fa-search-plus"></i>
+                                    </router-link>
                                 </td>
                             </tr>
                         
