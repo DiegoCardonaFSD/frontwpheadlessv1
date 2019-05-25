@@ -8,7 +8,7 @@
 
 export default {
     components: {
-        Interviewers
+        
     }    
 }
 </script>

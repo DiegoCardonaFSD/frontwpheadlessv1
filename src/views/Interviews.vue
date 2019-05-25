@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    Interviews
+  <div class="about">
+    <h1>This is an interviews page</h1>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 
 export default {
     components: {
-        Interviews
+    
     }    
 }
 </script>

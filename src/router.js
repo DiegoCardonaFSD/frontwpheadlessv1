@@ -38,6 +38,16 @@ export default new Router({
       name: 'candidate',
       component: () => import('./views/Candidate.vue')
     },
+    {
+      path: '/interviewers',
+      name: 'interviewers',
+      component: () => import('./views/Interviewers.vue')
+    },
+    {
+      path: '/interviewer/:id',
+      name: 'interviewer',
+      component: () => import('./views/Interviewer.vue')
+    }
 
   ]
 })
