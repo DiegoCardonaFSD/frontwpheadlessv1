@@ -4,11 +4,4 @@
   </div>
 </template>
 
-<script>
 
-export default {
-    components: {
-        Candidate
-    }    
-}
-</script>
