@@ -13,9 +13,20 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
-
+    SET_INTERVIEWS(state, interviews){
+      state.interviews = interviews;
+    },
   },
   actions: {
-
+    loadData({commit}){
+      axios.get("http://wpheadlessv1.test/wp-json/acf/v3/interviews")
+        .then((response)  =>  {
+          //console.log(JSON.stringify(response.data));
+          let interviews = response.data;
+          commit('SET_INTERVIEWS', interviews);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    }
   }
 })
