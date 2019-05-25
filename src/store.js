@@ -100,10 +100,13 @@ export default new Vuex.Store({
         })
     },
     ////DELETES
-    deleteInterview({commit}, id){
-      //  /wp-json/acf/v3/interviews/41
-      console.log('deleteInterview')
-      console.log(id)
+    deleteInterview({commit, dispatch}, id){
+      axios.delete(domain+"/wp-json/acf/v3/interviews/"+id)
+        .then((response)  =>  {
+          dispatch('loadData');
+        }, (error)  =>  {
+          this.loading = false;
+        })
     }
   }
 })
