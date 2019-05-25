@@ -11,7 +11,11 @@ export default new Vuex.Store({
     ],
     candidates: [
       {acf:{name:'',lastname:'', phonenumer:'', position: ''}}
-    ]
+    ],
+    interviewers: [
+      {acf:{name:'',lastname:'', phonenumer:'', technologies_evaluated: ''}}
+    ],
+
   },
   mutations: {
     SET_INTERVIEWS(state, interviews){
@@ -20,11 +24,15 @@ export default new Vuex.Store({
     SET_CANDIDATES(state, candidates){
       state.candidates = candidates;
     },
+    SET_INTERVIEWERS(state, interviewers){
+      state.interviewers = interviewers;
+    },
   },
   actions: {
     loadData({commit, dispatch}){
       dispatch('getInterviews');
       dispatch('getCandidates');
+      dispatch('getInterviewers');
     },
     getInterviews({commit}){
       axios.get("http://wpheadlessv1.test/wp-json/acf/v3/interviews")
@@ -42,6 +50,16 @@ export default new Vuex.Store({
           //console.log(JSON.stringify(response.data));
           let candidates = response.data;
           commit('SET_CANDIDATES', candidates);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
+    getInterviewers({commit}){
+      axios.get("http://wpheadlessv1.test/wp-json/acf/v3/interviewers")
+        .then((response)  =>  {
+          //console.log(JSON.stringify(response.data));
+          let interviewers = response.data;
+          commit('SET_INTERVIEWERS', interviewers);
         }, (error)  =>  {
           this.loading = false;
         })
