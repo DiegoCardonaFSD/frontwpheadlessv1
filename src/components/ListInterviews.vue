@@ -14,15 +14,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>text 1</td>
-                            <td>text 2</td>
-                            <td>text 3</td>
-                            <td>
-                                <i class="fas fa-search-plus"></i>
-                            </td>
-                        </tr>
+                        <tr v-for="item of interviews" :key="item.id">
+                                <th scope="row" v-text="item.id">1</th>
+                                <td v-text="item.acf.interviewer.post_title"></td>
+                                <td v-text="item.acf.candidate.post_title"></td>
+                                <td  v-text="item.acf.date"></td>
+                                <td>
+                                    <i class="fas fa-search-plus"></i>
+                                </td>
+                            </tr>
                         
                     </tbody>
                     </table>
@@ -34,9 +34,13 @@
 
 <script>
 
+import {mapState} from 'vuex'
 
 export default {
     name: 'ListInterviews', 
+    computed: {
+        ...mapState(['interviews'])
+    }
 }
 </script>
 

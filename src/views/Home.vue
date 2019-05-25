@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <Header/>
-    
     <main role="main" class="container">
       <Nav/>
       <ListInterviews/>
