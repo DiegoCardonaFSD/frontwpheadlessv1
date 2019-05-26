@@ -31,10 +31,10 @@ It's this case, I'm using Wordpress only to manage your data and expose these th
 - **PDN**: npm run build
 
 ## REPOS
-- **FRONT**[https://github.com/DiegoCardonaFSD/frontwpheadlessv1
-](https://github.com/DiegoCardonaFSD/frontwpheadlessv1)
+- **FRONT** [https://github.com/DiegoCardonaFSD/frontwpheadlessv1
+](https://github.com/DiegoCardonaFSD/frontwpheadlessv1){:target="_blank"}
 - **BACK**  [https://github.com/DiegoCardonaFSD/HeadLessWordpress
-](https://github.com/DiegoCardonaFSD/HeadLessWordpress)
+](https://github.com/DiegoCardonaFSD/HeadLessWordpress){:target="_blank"}
 
 ## Note: 
 Remembered this is a beta version!
