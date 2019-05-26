@@ -69,6 +69,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" @click="saveModal">Save</button>
                                 <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
                             </div>
                         </div>
@@ -105,9 +106,12 @@ export default {
     methods: {
         ...mapMutations(['SET_INTERVIEW']),
         closeModal(){
-            this.showModal = false;
             this.$emit('showModalChanged', false);
             this.$router.push( '/interviews' );
+        },
+        saveModal(){
+            console.log(JSON.stringify(this.interviewer));
+            console.log(JSON.stringify(this.candidate));
         },
         create(){
             alert('creando')
