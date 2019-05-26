@@ -90,6 +90,7 @@ export default new Vuex.Store({
   },
   actions: {
     loadData({commit, dispatch}){
+      console.log(process.env.VUE_APP_USER);
       dispatch('login');
       dispatch('getInterviews');
       dispatch('getCandidates');
