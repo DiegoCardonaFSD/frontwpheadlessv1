@@ -76,6 +76,7 @@ export default {
     methods: {
         ...mapMutations(['SET_INTERVIEWER']),
         closeModal(){
+            this.SET_INTERVIEWER(0);
             this.showModal = false;
             this.$router.push( '/interviewers' );
         }

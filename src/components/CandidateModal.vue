@@ -76,6 +76,7 @@ export default {
     methods: {
         ...mapMutations(['SET_CANDIDATE']),
         closeModal(){
+            this.SET_CANDIDATE(0);
             this.showModal = false;
             this.$router.push( '/candidates' );
         }

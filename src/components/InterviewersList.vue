@@ -3,10 +3,12 @@
         <div class="my-3 p-3 bg-white rounded shadow-sm">
             <div class="row">
                 <div class="col-6 align-middle">
-                    <h6 class="pb-2 mb-0 align-middle">Interviewers</h6>
+                    <h6 class="pb-2 mb-0 align-middle">Latest Interviewers</h6>
                 </div>
                 <div class="col-6">
-                    <button type="button" class="btn btn-primary btn-sm float-sm-right">Add</button>
+                    <button type="button" 
+                    class="btn btn-primary btn-sm float-sm-right" 
+                    @click="create()">Add</button>
                 </div>
             </div>
             <div class="media text-muted pt-3 d-block d-md-none">
@@ -23,9 +25,11 @@
                             <th scope="row" v-text="item.id">1</th>
                             <td v-text="item.acf.name +' '+ item.acf.lastname "></td>
                             <td>
-                                <i class="fas fa-eye icons-right-space"></i>
-                                <i class="fas fa-edit icons-right-space" ></i>
-                                <i class="fas fa-trash" @click="_deleteInterview(item.id)"></i>
+                                <router-link :to="{ name: 'interviewer', params: { id: item.id }}">
+                                    <i class="fas fa-eye icons-right-space"></i>
+                                </router-link>
+                                <i class="fas fa-edit icons-right-space" @click="edit(item.id)"></i>
+                                <i class="fas fa-trash" @click="_deleteInterviewer(item.id)"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -53,8 +57,11 @@
                             <td v-text="item.acf.phonenumber"></td>
                             <td v-text="item.acf.technologies_evaluated"></td>
                             <td>
-                                <i class="fas fa-edit" style="margin-right: 10px"></i>
-                                <i class="fas fa-trash" @click="_deleteInterview(item.id)"></i>
+                                <router-link :to="{ name: 'interviewer', params: { id: item.id }}">
+                                    <i class="fas fa-eye icons-right-space"></i>
+                                </router-link>
+                                <i class="fas fa-edit" style="margin-right: 10px" @click="edit(item.id)"></i>
+                                <i class="fas fa-trash" @click="_deleteInterviewer(item.id)"></i>
                             </td>
                         </tr>
                         
@@ -62,23 +69,46 @@
                 </table>
             </div>
         </div>
-
+        <InterviewerModalCreateAndUpdate 
+            :showModal="status" 
+            :current_id="current_id"
+            @showModalChanged="status = $event"></InterviewerModalCreateAndUpdate>
     </div>
 </template>
 
 <script>
 
 import {mapState, mapActions} from 'vuex'
+import InterviewerModalCreateAndUpdate from '@/components/InterviewerModalCreateAndUpdate.vue'
 
 export default {
     name: 'InterviewersList', 
+    data(){
+        return {
+            status: false,
+            current_id: 0,
+        }
+    },
+    components: {
+        InterviewerModalCreateAndUpdate,
+    },
     computed: {
         ...mapState(['interviewers'])
     },
     methods: {
-        ...mapActions(['deleteInterview']),
-        _deleteInterview(id){
-            this.$store.dispatch('deleteInterview', id);
+        ...mapActions(['deleteInterviewer']),
+        _deleteInterviewer(id){
+           if(confirm('Are you sure you want to delete this item?')){
+                this.$store.dispatch('deleteInterviewer', id);
+           }
+        },
+        create(){
+            this.current_id = 0;
+            this.status = true;
+        },
+        edit(id){
+            this.current_id = id;
+            this.status = true;
         }
     }
 }

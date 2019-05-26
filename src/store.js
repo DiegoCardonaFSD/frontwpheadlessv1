@@ -52,6 +52,16 @@ export default new Vuex.Store({
           state.candidate = element;
         }
       });
+      if(id == 0){
+        state.candidate = {id:'',acf: {name: '', lastname: '', email: '', phonenumber: '', position: ''}};
+      }
+    },
+    GET_CANDIDATE(state, id){
+      state.candidates.forEach(element => {
+        if(element.id == id){
+          state.candidate = element;
+        }
+      });
     },
     SET_INTERVIEWERS(state, interviewers){
       state.interviewers = interviewers;
@@ -63,10 +73,19 @@ export default new Vuex.Store({
           state.interviewer = element;
         }
       });
+      if(id == 0){
+        state.interviewer = {id:'',acf: {name: '', lastname: '', email: '', phonenumber: '', technologies_evaluated: ''}};
+      }
+    },
+    GET_INTERVIEWER(state, id){
+      state.interviewers.forEach(element => {
+        if(element.id == id){
+          state.interviewer = element;
+        }
+      });
     },
     SET_SAVECB(state, cb){
       state.saveCb = cb;
-      console.log('SET_SAVECB ');
     },
   },
   actions: {
@@ -170,6 +189,70 @@ export default new Vuex.Store({
           this.loading = false;
         })
     },
+    createInterviewer({commit, dispatch}, data){
+      var form_data = new FormData();
+      form_data.append('title', data.name+' '+data.lastname);
+      form_data.append('status', 'publish');
+      //axios.post(domain+"test/v1/post", _data, this.state.header)
+      axios.post(domain + "/wp-json/wp/v2/interviewers", form_data, this.state.header)
+        .then((response)  =>  {
+          //console.log(response.data);
+          data.id = response.data.id;
+          dispatch('createInterviewer2', data);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
+    createInterviewer2({commit, dispatch}, data){
+      axios.post(domain + "/wp-json/interviewer/add", data, this.state.header)
+        .then((response)  =>  {
+          dispatch('loadData');
+          commit('SET_SAVECB', true);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
+    updateInterviewer({commit, dispatch}, data){
+      axios.post(domain + "/wp-json/interviewer/update", data, this.state.header)
+        .then((response)  =>  {
+          dispatch('loadData');
+          commit('SET_SAVECB', true);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
+    createCandidate({commit, dispatch}, data){
+      var form_data = new FormData();
+      form_data.append('title', data.name+' '+data.lastname);
+      form_data.append('status', 'publish');
+      //axios.post(domain+"test/v1/post", _data, this.state.header)
+      axios.post(domain + "/wp-json/wp/v2/candidates", form_data, this.state.header)
+        .then((response)  =>  {
+          //console.log(response.data);
+          data.id = response.data.id;
+          dispatch('createInterviewer2', data);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
+    createCandidate2({commit, dispatch}, data){
+      axios.post(domain + "/wp-json/candidate/add", data, this.state.header)
+        .then((response)  =>  {
+          dispatch('loadData');
+          commit('SET_SAVECB', true);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
+    updateCandidate({commit, dispatch}, data){
+      axios.post(domain + "/wp-json/candidate/update", data, this.state.header)
+        .then((response)  =>  {
+          dispatch('loadData');
+          commit('SET_SAVECB', true);
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
     ////DELETES
     deleteInterview({commit, dispatch}, id){
       axios.delete(domain+"/wp-json/acf/v3/interviews/"+id, this.state.header)
@@ -178,6 +261,23 @@ export default new Vuex.Store({
         }, (error)  =>  {
           this.loading = false;
         })
+    },
+    deleteInterviewer({commit, dispatch}, id){
+      axios.delete(domain+"/wp-json/acf/v3/interviewers/"+id, this.state.header)
+        .then((response)  =>  {
+          dispatch('loadData');
+        }, (error)  =>  {
+          this.loading = false;
+        })
+    },
+    deleteCandidate({commit, dispatch}, id){
+      axios.delete(domain+"/wp-json/acf/v3/candidates/"+id, this.state.header)
+        .then((response)  =>  {
+          dispatch('loadData');
+        }, (error)  =>  {
+          this.loading = false;
+        })
     }
+
   }
 })
