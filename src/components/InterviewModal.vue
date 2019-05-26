@@ -80,6 +80,7 @@ export default {
     methods: {
         ...mapMutations(['SET_INTERVIEW']),
         closeModal(){
+            this.SET_INTERVIEW(0);
             this.showModal = false;
             this.$router.push( '/interviews' );
         }

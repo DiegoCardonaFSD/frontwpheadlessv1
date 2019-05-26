@@ -5,17 +5,30 @@
             <transition name="modal">
                 <div class="modal-mask">
                     <div class="modal-wrapper">
-
+                    <form @submit="saveModal">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Interview</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <h5 class="modal-title" v-if="current_id == 0">Create Interview</h5>
+                                <h5 class="modal-title" v-if="current_id != 0">Edit Interview</h5>
+                                <button type="button" class="close" v-if="!loading" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true" @click="closeModal">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div class="media text-muted pt-3">
+                                
+                                <div class="media text-muted pt-3 d-flex justify-content-center" 
+                                    v-if="loading">
+                                    <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <span class="icons-left-space">Saving Data...</span>
+                                </div>
+                                <div class="media text-muted pt-3 d-flex justify-content-center" 
+                                    v-if="saved">
+                                    <span class="icons-left-space">Saved !!!</span>
+                                </div>
+                                <div class="media text-muted pt-3" v-if="!loading && !saved">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr v-if="current_id != 0">
@@ -25,10 +38,10 @@
                                             <tr>
                                                 <th>Interviewer</th>
                                                 <td>
-                                                    <select v-model="interviewer.id">
+                                                    <select v-model="interviewer.id" required>
                                                         <option disabled value="">Please select one</option>
-                                                        <option v-for="item of interviewers"
-                                                         :key="item.id"
+                                                        <option v-for="(item,i) of interviewers"
+                                                        :key="`${i}-${item.id}`"
                                                         v-text="item.acf.name+' '+item.acf.lastname"
                                                         v-bind:value="item.id"></option>
                                                         
@@ -38,10 +51,10 @@
                                             <tr>
                                                 <th>Candidate</th>
                                                 <td>
-                                                    <select v-model="candidate.id">
+                                                    <select v-model="candidate.id" required>
                                                         <option disabled value="">Please select one</option>
-                                                        <option v-for="item of candidates"
-                                                         :key="item.id"
+                                                        <option v-for="(item,i) of candidates"
+                                                        :key="`${i}-${item.id}`"
                                                         v-text="item.acf.name+' '+item.acf.lastname"
                                                         v-bind:value="item.id"></option>
                                                         
@@ -50,31 +63,47 @@
                                             </tr>
                                             <tr>
                                                 <th>Date</th>
-                                                <td v-text="interview.acf.date"></td>
+                                                <td>
+                                                    <date-picker v-model="date" :config="options" required></date-picker>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Meeting Link</th>
-                                                <td v-text="interview.acf.meetinglink"></td>
+                                                <td>
+                                                    <input v-model="meetinglink" type="text" maxlength="100" required>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Rate</th>
-                                                <td v-text="interview.acf.rate"></td>
+                                                <td>
+                                                    <input v-model="rate" type="text" maxlength="30" required>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Status</th>
-                                                <td v-text="interview.acf.status"></td>
+                                                <td>
+                                                    <select v-model="status" required>
+                                                        <option disabled value="">Please select one</option>
+                                                        <option value="scheduled">Scheduled</option>
+                                                        <option value="completed">Completed</option>
+                                                        <option value="cancelled">Cancelled</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" @click="saveModal">Save</button>
-                                <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
+                                <div v-if="!loading">
+                                    <button type="submit" class="btn btn-primary" v-if="!saved">Save</button>
+                                    <button type="button" class="btn btn-secondary icons-left-space" @click="closeModal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
+                    </form>
                     </div>
                 </div>
             </transition>
@@ -84,39 +113,109 @@
 </template>
 
 <script>
+
+import datePicker from 'vue-bootstrap-datetimepicker';
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
+
 import {mapState,mapMutations} from 'vuex'
 
 export default {
     name: 'InterviewModalCreateAndUpdate', 
     props: ['showModal','current_id'],
+    components: {
+        datePicker,
+    },
     data(){
         return{
-            //showModal:false,
             id: this.$route.params.id,
             candidate: {id:0, acf: {name: '', lastname: '', email: '', phonenumber: '', position: ''}},
             interviewer: {id:0, acf: {name: '', lastname: '', email: '', phonenumber: '', technologies_evaluated: ''}},
+            date: '',
+            meetinglink: '',
+            rate: '',
+            status: '',
+            options: {
+                format: 'YYYY/MM/DD',
+                useCurrent: true,
+                showClear: true,
+                showClose: true,
+            },
+            loading: false,
+            saved: false,
         }
     },
     computed: {
-        ...mapState(['interviewers','interview', 'candidates'])
+        ...mapState(['interviewers','interview', 'candidates', 'saveCb'])
     },
     created(){
-        this.SET_INTERVIEW(this.id);
+        this._getInterview(); 
     },
     methods: {
-        ...mapMutations(['SET_INTERVIEW']),
+        ...mapMutations(['GET_INTERVIEW','SET_SAVECB']),
         closeModal(){
-            this.$emit('showModalChanged', false);
-            this.$router.push( '/interviews' );
+            this.saved = false;
+            this.loading = false;
+            
+                this.$emit('showModalChanged', false);
+                this.$router.push( '/interviews' );
+            
         },
-        saveModal(){
-            console.log(JSON.stringify(this.interviewer));
-            console.log(JSON.stringify(this.candidate));
+        saveModal(e){
+            e.preventDefault();
+            let data = {
+                candidate_id : this.candidate.id,
+                interviewer_id : this.interviewer.id,
+                date : this.date,
+                meetinglink : this.meetinglink,
+                rate : this.rate,
+                status : this.status
+            };
+             if(this.current_id == 0){
+                this.$store.dispatch('createInterview', data);
+             }else{
+                 data.id = this.current_id;
+                this.$store.dispatch('updateInterview', data); 
+             }
+             this.loading = true;
+             return false;
         },
-        create(){
-            alert('creando')
+        _getInterview(){
+            if(this.current_id != 0){
+                this.GET_INTERVIEW(this.current_id);
+            }else{
+                this.candidate.id = 0;
+                this.interviewer.id = 0;
+                this.date = '';
+                this.meetinglink = '';
+                this.rate = '';
+                this.status = '';
+            }
         }
     },
+    watch: {
+        current_id: function(val, oldval){
+            
+        },
+        interview: function(){
+            if(this.interview.id != ''){
+                this.candidate.id = this.interview.acf.candidate.ID;
+                this.interviewer.id = this.interview.acf.interviewer.ID;
+                this.date = this.interview.acf.date;
+                this.meetinglink = this.interview.acf.meetinglink;
+                this.rate = this.interview.acf.rate;
+                this.status = this.interview.acf.status;
+            }
+        },
+        saveCb: function(){
+            this.loading = false;
+            this.saved = true;
+        },
+        showModal: function(){
+            this._getInterview();
+            this.saved = false;
+            this.SET_SAVECB(false);
+        }
+    }
 }
 
 </script>
@@ -137,5 +236,8 @@ export default {
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
+}
+.icons-left-space{
+     margin-left: 10px
 }
 </style>

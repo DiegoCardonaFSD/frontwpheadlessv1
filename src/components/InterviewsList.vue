@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item of interviews" :key="item.id">
+                        <tr v-for="(item,i) of interviews" :key="`l-${i}-${item.id}`">
                                 <th scope="row" v-text="item.id">1</th>
                                 <td v-text="item.acf.interviewer.post_title"></td>
                                 <td v-text="item.acf.candidate.post_title"></td>
@@ -51,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item of interviews" :key="item.id">
+                        <tr v-for="(item,i) of interviews" :key="`lw-${i}-${item.id}`">
                                 <th scope="row" v-text="item.id">1</th>
                                 <td v-text="item.acf.interviewer.post_title"></td>
                                 <td v-text="item.acf.candidate.post_title"></td>
