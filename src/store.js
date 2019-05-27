@@ -4,7 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex, axios);
 
-let domain = "http://wpheadlessv1.test";
+// let domain = "http://wpheadlessv1.test";
+let domain = "http://wpheadlessv1.thedeveloper.co";
 
 export default new Vuex.Store({
   state: {
